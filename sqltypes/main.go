@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"reflect"
 	"strings"
 )
 
@@ -43,7 +44,12 @@ func query(db *sql.DB, quer string) error {
 	}
 
 	for i := range names {
-		fmt.Printf("%s: %T\n", names[i], values[i])
+		v := reflect.ValueOf(values[i])
+		if v.Kind() == reflect.Slice {
+			fmt.Printf("%s: %s len=%d  %#v\n", names[i], v.Type(), v.Len(), values[i])
+		} else {
+			fmt.Printf("%s: %s  %#v\n", names[i], v.Type(), values[i])
+		}
 	}
 
 	return nil
