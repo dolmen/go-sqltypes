@@ -44,11 +44,15 @@ func query(db *sql.DB, quer string) error {
 	}
 
 	for i := range names {
-		v := reflect.ValueOf(values[i])
-		if v.Kind() == reflect.Slice {
-			fmt.Printf("%s: %s len=%d  %#v\n", names[i], v.Type(), v.Len(), values[i])
+		if values[i] == nil {
+			fmt.Printf("%s: nil\n", names[i])
 		} else {
-			fmt.Printf("%s: %s  %#v\n", names[i], v.Type(), values[i])
+			v := reflect.ValueOf(values[i])
+			if v.Kind() == reflect.Slice {
+				fmt.Printf("%s: %s len=%d  %#v\n", names[i], v.Type(), v.Len(), values[i])
+			} else {
+				fmt.Printf("%s: %s  %#v\n", names[i], v.Type(), values[i])
+			}
 		}
 	}
 
